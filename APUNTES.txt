@@ -1,0 +1,11 @@
+Primero instalar en NUGGETS: EFC.TOOLS / EFC.SQLSERVER
+conectar bd con EntityFrameworkCore :
+1) Herramientas=>Administrador de paquetes NUGGETS=>Consola de administrador de paquetes
+2) Escribir comando :
+no válido
+Scaffold-DbContext "Server=DESKTOP-PJQ2NJB\\SQLEXPRESS_2012;Database=BD_TEST;Trusted_Connection=True;" Microsoft.EntityFrameworkCore.SqlServer -OutputDir Models
+válido
+Scaffold-DbContext "Server=.\SQLEXPRESS_2012;Database=BD_TEST;Trusted_Connection=True;TrustServerCertificate=True
+" Microsoft.EntityFrameworkCore.SqlServer -OutputDir Models
+Scaffold-DbContext "Server=DESKTOP-PJQ2NJB\SQLEXPRESS_2012;Database=BD_TEST;Trusted_Connection=True;TrustServerCertificate=True" Microsoft.EntityFrameworkCore.SqlServer -OutputDir Models
+

@@ -1,6 +1,6 @@
 using Microsoft.EntityFrameworkCore;
 using PruebasMinimalApi;
-using PruebasMinimalApi.Modelo;
+using PruebasMinimalApi.Models;
 
 var builder = WebApplication.CreateBuilder(args);
 
@@ -9,8 +9,13 @@ var builder = WebApplication.CreateBuilder(args);
 builder.Services.AddEndpointsApiExplorer();
 builder.Services.AddSwaggerGen();
 
-//Add dbContext, here you can we are using In-memory database.
+//Add dbContext, here you can we are using In-memory database volatil.
 builder.Services.AddDbContext<BeerDb>(opt => opt.UseInMemoryDatabase("Beer")); //mismo nombre de la clase Beer
+
+//Add dbContext, here you can we are using  database local .
+builder.Services.AddDbContext<BdTestContext>();
+builder.Services.AddDbContext<DbContextClass>();
+
 
 var app = builder.Build();
 
@@ -23,7 +28,7 @@ if (app.Environment.IsDevelopment())
 
 app.UseHttpsRedirection();
 
-//---------------EJEMPLO SIMPLE------------------------------------------
+//---------------EJEMPLO SIMPLE DE MINIMAL API------------------------------------------
 app.MapGet("/", () => "Hello World");
 
 //-----------------------------------------------------------------------
@@ -32,7 +37,7 @@ app.MapPost("/beer", async (Beer beers, BeerDb db) =>
 {
     db.beers.Add(beers);
     await db.SaveChangesAsync();
-    return Results.Created($"/beer/{beers.beerId}", beers);
+    return Results.Created($"/beer/{beers.BeerId}", beers);
 });
 //----------------------------------------------------------
 app.MapGet("/beers", async (BeerDb db) =>
@@ -57,6 +62,85 @@ app.MapDelete("/beer/{id}", async (int id,  BeerDb db) =>
     }
     return Results.NotFound();
 });
+//-----------------------------------------------------------------------
+//---------------EJEMPLO CRUD CON BD SERVIDOR LOCAL=> NUGGETS: EFC.TOOLS / EFC.SQLSERVER-----------------------------
+//get canales
+//funciona
+//app.MapGet("/Canal", async (BdTestContext dbContext) =>
+//{
+//    var canales = await dbContext.Canals.ToListAsync();
+//    if (canales == null)
+//    {
+//        return Results.NoContent();
+//    }
+//    return Results.Ok(canales);
+
+
+app.MapGet("/Canal", async (DbContextClass dbContext) =>
+{
+    var canales = await dbContext.Canal.ToListAsync();
+    if (canales == null)
+    {
+        return Results.NoContent();
+    }
+    return Results.Ok(canales);
+});
+
+//get canal by id
+app.MapGet("/Canal/{id}", async (int id, BdTestContext dbContext) =>
+{
+    var canal = await dbContext.Canals.FindAsync(id);
+    return canal != null ? Results.Ok(canal) : Results.NotFound();
+});
+
+//get canal by id
+app.MapGet("/CanalbyId/{id}", async (int idcanal, BdTestContext dbContext) =>
+{
+    var canal = await dbContext.Canals.FindAsync(idcanal);
+    if (canal == null)
+    {
+        return Results.NotFound();
+    }
+    return Results.Ok(canal);
+});
+
+//create a new canal
+app.MapPost("/createCanal", async (Canal canal, BdTestContext dbContext) =>
+{
+    var result = dbContext.Canals.Add(canal);
+    await dbContext.SaveChangesAsync();
+    return Results.Ok(result.Entity);
+});
+
+//update the canal
+app.MapPut("/updateCanal", async (Canal canal, BdTestContext dbContext) =>
+{
+    var canalDetail = await dbContext.Canals.FindAsync(canal.Idcanal);
+    if (canal == null)
+    {
+        return Results.NotFound();
+    }
+    canalDetail.Descripcion = canal.Descripcion;
+    canalDetail.BActivo = canal.BActivo;
+
+
+    await dbContext.SaveChangesAsync();
+    return Results.Ok(canalDetail);
+});
+
+//delete the canal by id
+app.MapDelete("/deleteCanal/{id}", async (int id, BdTestContext dbContext) =>
+{
+    var canal = await dbContext.Canals.FindAsync(id);
+    if (canal == null)
+    {
+        return Results.NoContent();
+    }
+    dbContext.Canals.Remove(canal);
+    await dbContext.SaveChangesAsync();
+    return Results.Ok();
+});
+
 
 //-----------------------------------------------------------------------
 //---------------EJEMPLO POR DEFECTO SWAGER-----------------------------

@@ -1,5 +1,5 @@
 ﻿using Microsoft.EntityFrameworkCore;
-using PruebasMinimalApi.Modelo;
+using PruebasMinimalApi.Models;
 
 namespace PruebasMinimalApi
 {
