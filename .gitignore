@@ -51,3 +51,6 @@ Thumbs.db
 # Visual Studio
 *.vs
 *.tiff
+
+# Control de versiones
+.github/

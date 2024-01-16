@@ -13,7 +13,7 @@ namespace PruebasMinimalApi.Models
 
         protected override void OnConfiguring(DbContextOptionsBuilder options)
         {
-            options.UseSqlServer(Configuration.GetConnectionString("BackendConexion"));
+            options.UseSqlServer(Configuration.GetConnectionString("ConexionDB_azure"));
         }
 
         public DbSet<Canal> Canal { get; set; }

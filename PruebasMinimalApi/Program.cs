@@ -79,70 +79,70 @@ app.MapDelete("/beer/{id}", async (int id,  BeerDb db) =>
 //    return Results.Ok(canales);
 
 
-app.MapGet("/Canal", async (DbContextClass dbContext) =>
-{
-    var canales = await dbContext.Canal.ToListAsync();
-    if (canales == null)
-    {
-        return Results.NoContent();
-    }
-    return Results.Ok(canales);
-});
+//app.MapGet("/Canal", async (DbContextClass dbContext) =>
+//{
+//    var canales = await dbContext.Canal.ToListAsync();
+//    if (canales == null)
+//    {
+//        return Results.NoContent();
+//    }
+//    return Results.Ok(canales);
+//});
+
+////get canal by id
+//app.MapGet("/Canal/{id}", async (int id, BdTestContext dbContext) =>
+//{
+//    var canal = await dbContext.Canals.FindAsync(id);
+//    return canal != null ? Results.Ok(canal) : Results.NotFound();
+//});
 
 //get canal by id
-app.MapGet("/Canal/{id}", async (int id, BdTestContext dbContext) =>
-{
-    var canal = await dbContext.Canals.FindAsync(id);
-    return canal != null ? Results.Ok(canal) : Results.NotFound();
-});
+//app.MapGet("/CanalbyId/{id}", async (int idcanal, BdTestContext dbContext) =>
+//{
+//    var canal = await dbContext.Canals.FindAsync(idcanal);
+//    if (canal == null)
+//    {
+//        return Results.NotFound();
+//    }
+//    return Results.Ok(canal);
+//});
 
-//get canal by id
-app.MapGet("/CanalbyId/{id}", async (int idcanal, BdTestContext dbContext) =>
-{
-    var canal = await dbContext.Canals.FindAsync(idcanal);
-    if (canal == null)
-    {
-        return Results.NotFound();
-    }
-    return Results.Ok(canal);
-});
+////create a new canal
+//app.MapPost("/createCanal", async (Canal canal, BdTestContext dbContext) =>
+//{
+//    var result = dbContext.Canals.Add(canal);
+//    await dbContext.SaveChangesAsync();
+//    return Results.Ok(result.Entity);
+//});
 
-//create a new canal
-app.MapPost("/createCanal", async (Canal canal, BdTestContext dbContext) =>
-{
-    var result = dbContext.Canals.Add(canal);
-    await dbContext.SaveChangesAsync();
-    return Results.Ok(result.Entity);
-});
-
-//update the canal
-app.MapPut("/updateCanal", async (Canal canal, BdTestContext dbContext) =>
-{
-    var canalDetail = await dbContext.Canals.FindAsync(canal.Idcanal);
-    if (canal == null)
-    {
-        return Results.NotFound();
-    }
-    canalDetail.Descripcion = canal.Descripcion;
-    canalDetail.BActivo = canal.BActivo;
+////update the canal
+//app.MapPut("/updateCanal", async (Canal canal, BdTestContext dbContext) =>
+//{
+//    var canalDetail = await dbContext.Canals.FindAsync(canal.Idcanal);
+//    if (canal == null)
+//    {
+//        return Results.NotFound();
+//    }
+//    canalDetail.Descripcion = canal.Descripcion;
+//    canalDetail.BActivo = canal.BActivo;
 
 
-    await dbContext.SaveChangesAsync();
-    return Results.Ok(canalDetail);
-});
+//    await dbContext.SaveChangesAsync();
+//    return Results.Ok(canalDetail);
+//});
 
-//delete the canal by id
-app.MapDelete("/deleteCanal/{id}", async (int id, BdTestContext dbContext) =>
-{
-    var canal = await dbContext.Canals.FindAsync(id);
-    if (canal == null)
-    {
-        return Results.NoContent();
-    }
-    dbContext.Canals.Remove(canal);
-    await dbContext.SaveChangesAsync();
-    return Results.Ok();
-});
+////delete the canal by id
+//app.MapDelete("/deleteCanal/{id}", async (int id, BdTestContext dbContext) =>
+//{
+//    var canal = await dbContext.Canals.FindAsync(id);
+//    if (canal == null)
+//    {
+//        return Results.NoContent();
+//    }
+//    dbContext.Canals.Remove(canal);
+//    await dbContext.SaveChangesAsync();
+//    return Results.Ok();
+//});
 
 //-----------------------------------------------------------------------
 //---------------EJEMPLO CON CONEXION DE BD EN AZURE-----------------------------
@@ -157,6 +157,62 @@ app.MapGet("/Marca", async (MarcaDbContext dbContext) =>
 });
 
 
+app.MapGet("/Canal", async (DbContextClass dbContext) =>
+{
+    var canales = await dbContext.Canal.ToListAsync();
+    if (canales == null)
+    {
+        return Results.NoContent();
+    }
+    return Results.Ok(canales);
+});
+
+//get canal by id
+app.MapGet("/Canal/{id}", async (int id, DbContextClass dbContext) =>
+{
+    var canal = await dbContext.Canal.FindAsync(id);
+    return canal != null ? Results.Ok(canal) : Results.NotFound();
+});
+
+
+
+//create a new canal
+app.MapPost("/createCanal", async (Canal canal, DbContextClass dbContext) =>
+{
+    var result = dbContext.Canal.Add(canal);
+    await dbContext.SaveChangesAsync();
+    return Results.Ok(result.Entity);
+});
+
+//update the canal
+app.MapPut("/updateCanal", async (Canal canal, DbContextClass dbContext) =>
+{
+    var canalDetail = await dbContext.Canal.FindAsync(canal.Idcanal);
+    if (canal == null)
+    {
+        return Results.NotFound();
+    }
+
+    canalDetail.Descripcion = canal.Descripcion;
+    canalDetail.BActivo = canal.BActivo;
+
+
+    await dbContext.SaveChangesAsync();
+    return Results.Ok(canalDetail);
+});
+
+//delete the canal by id
+app.MapDelete("/deleteCanal/{id}", async (int id, DbContextClass dbContext) =>
+{
+    var canal = await dbContext.Canal.FindAsync(id);
+    if (canal == null)
+    {
+        return Results.NoContent();
+    }
+    dbContext.Canal.Remove(canal);
+    await dbContext.SaveChangesAsync();
+    return Results.Ok();
+});
 //-----------------------------------------------------------------------
 //---------------EJEMPLO POR DEFECTO SWAGER-----------------------------
 var summaries = new[]
