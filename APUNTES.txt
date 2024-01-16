@@ -9,3 +9,27 @@ Scaffold-DbContext "Server=.\SQLEXPRESS_2012;Database=BD_TEST;Trusted_Connection
 " Microsoft.EntityFrameworkCore.SqlServer -OutputDir Models
 Scaffold-DbContext "Server=DESKTOP-PJQ2NJB\SQLEXPRESS_2012;Database=BD_TEST;Trusted_Connection=True;TrustServerCertificate=True" Microsoft.EntityFrameworkCore.SqlServer -OutputDir Models
 
+//create a new canal
+app.MapPost("/createCanal", async (Canal canal, BdTestContext dbContext) =>
+{
+    var result = dbContext.Canals.Add(canal);
+    await dbContext.SaveChangesAsync();
+    return Results.Ok(result.Entity);
+});
+
+app.MapPost("/beer", async (Beer beers, BeerDb db) =>
+{
+    db.beers.Add(beers);
+    await db.SaveChangesAsync();
+    return Results.Created($"/beer/{beers.BeerId}", beers);
+});
+
+-------------------------------------------------
+creo una base de datos en azure:
+1) recurso
+2) servidor de bd sql server
+ponerlo en publico y agregar ip para que acepte conexiones desde la pc local
+3)crear bd , crear tablas , agregar cadena de conexion que brinda el azure
+Server=tcp:bdtestserver2024.database.windows.net,1433;Initial Catalog=bd_testPruebas;
+Persist Security Info=False;User ID=macs;Password={your_password};
+MultipleActiveResultSets=False;Encrypt=True;TrustServerCertificate=False;Connection Timeout=30;

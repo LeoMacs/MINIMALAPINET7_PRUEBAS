@@ -15,6 +15,9 @@ builder.Services.AddDbContext<BeerDb>(opt => opt.UseInMemoryDatabase("Beer")); /
 //Add dbContext, here you can we are using  database local .
 builder.Services.AddDbContext<BdTestContext>();
 builder.Services.AddDbContext<DbContextClass>();
+builder.Services.AddDbContext<MarcaDbContext>();
+
+
 
 
 var app = builder.Build();
@@ -139,6 +142,18 @@ app.MapDelete("/deleteCanal/{id}", async (int id, BdTestContext dbContext) =>
     dbContext.Canals.Remove(canal);
     await dbContext.SaveChangesAsync();
     return Results.Ok();
+});
+
+//-----------------------------------------------------------------------
+//---------------EJEMPLO CON CONEXION DE BD EN AZURE-----------------------------
+app.MapGet("/Marca", async (MarcaDbContext dbContext) =>
+{
+    var marcas = await dbContext.Marca.ToListAsync();
+    if (marcas == null)
+    {
+        return Results.NoContent();
+    }
+    return Results.Ok(marcas);
 });
 
 
