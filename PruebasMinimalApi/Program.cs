@@ -67,53 +67,35 @@ app.MapDelete("/beer/{id}", async (int id,  BeerDb db) =>
 });
 //-----------------------------------------------------------------------
 //---------------EJEMPLO CRUD CON BD SERVIDOR LOCAL=> NUGGETS: EFC.TOOLS / EFC.SQLSERVER-----------------------------
-//get canales
+//get departamentos
 //funciona
-//app.MapGet("/Canal", async (BdTestContext dbContext) =>
-//{
-//    var canales = await dbContext.Canals.ToListAsync();
-//    if (canales == null)
-//    {
-//        return Results.NoContent();
-//    }
-//    return Results.Ok(canales);
+app.MapGet("/Departamento", async (BdTestContext dbContext) =>
+{
+    var departamentos = await dbContext.Departamentos.ToListAsync();
+    if (departamentos == null)
+    {
+        return Results.NoContent();
+    }
+    return Results.Ok(departamentos);
+});
 
 
-//app.MapGet("/Canal", async (DbContextClass dbContext) =>
-//{
-//    var canales = await dbContext.Canal.ToListAsync();
-//    if (canales == null)
-//    {
-//        return Results.NoContent();
-//    }
-//    return Results.Ok(canales);
-//});
+//get departamento by id
+app.MapGet("/Departamento/{id}", async (int id, BdTestContext dbContext) =>
+{
+    var departamento = await dbContext.Departamentos.FindAsync(id);
+    return departamento != null ? Results.Ok(departamento) : Results.NotFound();
+});
 
-////get canal by id
-//app.MapGet("/Canal/{id}", async (int id, BdTestContext dbContext) =>
-//{
-//    var canal = await dbContext.Canals.FindAsync(id);
-//    return canal != null ? Results.Ok(canal) : Results.NotFound();
-//});
 
-//get canal by id
-//app.MapGet("/CanalbyId/{id}", async (int idcanal, BdTestContext dbContext) =>
-//{
-//    var canal = await dbContext.Canals.FindAsync(idcanal);
-//    if (canal == null)
-//    {
-//        return Results.NotFound();
-//    }
-//    return Results.Ok(canal);
-//});
 
-////create a new canal
-//app.MapPost("/createCanal", async (Canal canal, BdTestContext dbContext) =>
-//{
-//    var result = dbContext.Canals.Add(canal);
-//    await dbContext.SaveChangesAsync();
-//    return Results.Ok(result.Entity);
-//});
+////create a new departamaneto 
+app.MapPost("/createDepartamento", async (Departamento departamento, BdTestContext dbContext) =>
+{
+    var result = dbContext.Departamentos.Add(departamento);
+    await dbContext.SaveChangesAsync();
+    return Results.Ok(result.Entity);
+});
 
 ////update the canal
 //app.MapPut("/updateCanal", async (Canal canal, BdTestContext dbContext) =>
