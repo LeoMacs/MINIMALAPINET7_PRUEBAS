@@ -196,7 +196,7 @@ app.MapDelete("/deleteCanal/{id}", async (int id, DbContextClass dbContext) =>
     return Results.Ok();
 });
 //-----------------------------------------------------------------------
-//---------------EJEMPLO POR DEFECTO SWAGER-----------------------------
+//---------------EJEMPLO POR DEFECTO DE SWAGER-----------------------------
 var summaries = new[]
 {
     "Freezing", "Bracing", "Chilly", "Cool", "Mild", "Warm", "Balmy", "Hot", "Sweltering", "Scorching"
